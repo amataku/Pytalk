@@ -54,5 +54,7 @@ while flag:
     # serch database
     print(words)
 
+    # return voice
+
 # finish process
 thread.join()
