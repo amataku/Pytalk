@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 
 dictation-kit-v4.4*
+*.xml
