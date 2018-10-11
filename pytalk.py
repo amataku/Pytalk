@@ -2,6 +2,7 @@ from pyjtalk.pyjtalk import PyJtalk
 from xml.etree import ElementTree
 import socket
 import threading
+import sqlite3
 
 # setting
 pyj = PyJtalk()
@@ -10,11 +11,16 @@ PORT = 10500
 XMLFILE = "res.xml"
 flag = True
 
+# database setting
+DBPATH = 'return_db.sqlite'
+db_con = sqlite3.connect(DBPATH)
+cursor = db_con.cursor()
+
 # socket setting
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
 
-# thread set
+# thread setting
 def wait_input():
     global flag
     input()
@@ -53,8 +59,13 @@ while flag:
 
     # serch database
     print(words)
-
-    # return voice
+    for r_words in (reversed(words)):
+        cursor.execute('SELECT * FROM return WHERE output=?',(r_words,))
+        return_word = cursor.fetchone()
+        if return_word != None:
+            pyj.say(return_word[1])
+            break
 
 # finish process
 thread.join()
+db_con.close()
