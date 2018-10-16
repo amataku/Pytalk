@@ -66,3 +66,28 @@ def return_news(words):
             news += " "
 
     return news
+
+def return_weather(words):
+    payload = {
+        'city' : os.environ['CITY_ID']
+    }
+    weather = ""
+
+    if "明日" in words:
+        weather_json = requests.get('http://weather.livedoor.com/forecast/webservice/json/v1', params = payload).json()
+        weather += "明日の天気は、"
+        weather += weather_json["forecasts"][1]["telop"]
+        weather += "です。最高気温は、"
+        weather += weather_json["forecasts"][1]["temperature"]["max"]["celsius"]
+        weather += "度、最低気温は、"
+        weather += weather_json["forecasts"][1]["temperature"]["min"]["celsius"]
+        weather += "度です。"
+    else:
+        weather_json = requests.get('http://weather.livedoor.com/forecast/webservice/json/v1', params = payload).json()
+        weather += "今日の天気は、"
+        weather += weather_json["forecasts"][0]["telop"]
+        weather += "です。最高気温は、"
+        weather += weather_json["forecasts"][0]["temperature"]["max"]["celsius"]
+        weather += "度です。"
+
+    return weather

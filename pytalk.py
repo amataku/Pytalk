@@ -74,6 +74,10 @@ while over_rall:
                 news = module.return_news(words)
                 pyj.say(news)
                 break
+            elif return_word[1] == "weather":
+                weather = module.return_weather(words)
+                pyj.say(weather)
+                break
             else:
                 pyj.say(return_word[1])
                 break
