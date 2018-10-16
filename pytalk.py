@@ -1,8 +1,10 @@
+# coding:utf-8
 from pyjtalk.pyjtalk import PyJtalk
 from xml.etree import ElementTree
 import socket
 import threading
 import sqlite3
+import module
 
 # setting
 pyj = PyJtalk()
@@ -29,7 +31,6 @@ def wait_input():
         if state == "rec":
             input()
             state = "end_rec"
-
 
 thread = threading.Thread(target=wait_input)
 thread.start()
@@ -66,11 +67,16 @@ while over_rall:
     # serch database
     print(words)
     for r_words in (reversed(words)):
-        cursor.execute('SELECT * FROM return WHERE output=?',(r_words,))
+        cursor.execute('SELECT * FROM return WHERE input=?',(r_words,))
         return_word = cursor.fetchone()
         if return_word != None:
-            pyj.say(return_word[1])
-            break
+            if return_word[1] == "news":
+                news = module.return_news(words)
+                pyj.say(news)
+                break
+            else:
+                pyj.say(return_word[1])
+                break
 
     print("継続する場合はEnter,終了する場合はexitと入力して下さい")
     in_over = input(">>")
