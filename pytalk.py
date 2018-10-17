@@ -48,23 +48,26 @@ while over_rall:
     xml_file = open('res.xml', 'a')
 
     # rec
-    print("録音終了する場合はEnterを入力")
     client.recv(4096)
+    print("録音終了する場合はEnterを入力")
     while state == "rec":
         response = client.recv(4096).decode('utf-8')
         response_rep = response.replace('<s>','')
         xml_file.write(response_rep.replace('</s>',''))
 
     # get words from res.xml
-    xml_file.write("</ROOT>")
-    xml_file.close()
-    tree = ElementTree.parse(XMLFILE)
-    root = tree.getroot()
-    for ROOT in root:
-        for SHYPO in ROOT:
-            for WHYPO in SHYPO:
-                if WHYPO.attrib["WORD"] != "":
-                    words.append(WHYPO.attrib["WORD"])
+    try:
+        xml_file.write("</ROOT>")
+        xml_file.close()
+        tree = ElementTree.parse(XMLFILE)
+        root = tree.getroot()
+        for ROOT in root:
+            for SHYPO in ROOT:
+                for WHYPO in SHYPO:
+                    if WHYPO.attrib["WORD"] != "":
+                        words.append(WHYPO.attrib["WORD"])
+    except ValueError:
+        print("読み込みエラーが発生しました")
 
     # serch database
     print(words)
