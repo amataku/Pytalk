@@ -2,6 +2,7 @@
 import requests
 import json
 import os
+from PIL import Image
 
 def return_news(words):
     payload = {
@@ -91,3 +92,7 @@ def return_weather(words):
         weather += "度です。"
 
     return weather
+
+def return_map(words):
+    image = Image.open("./picture/index.png")
+    image.show()

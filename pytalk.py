@@ -39,6 +39,7 @@ thread.start()
 while over_rall:
     # before setting
     words = []
+    say_flag = False
     state = "rec"
     xml_file = open('res.xml', 'w')
     xml_file.write("<ROOT>\n")
@@ -48,6 +49,7 @@ while over_rall:
 
     # rec
     print("録音終了する場合はEnterを入力")
+    client.recv(4096)
     while state == "rec":
         response = client.recv(4096).decode('utf-8')
         response_rep = response.replace('<s>','')
@@ -73,17 +75,28 @@ while over_rall:
             if return_word[1] == "news":
                 news = module.return_news(words)
                 pyj.say(news)
+                say_flag = True
                 break
             elif return_word[1] == "weather":
                 weather = module.return_weather(words)
                 pyj.say(weather)
+                say_flag = True
+                break
+            elif return_word[1] == "map":
+                module.return_map(words)
+                pyj.say("地図を表示します。")
+                say_flag = True
                 break
             else:
                 pyj.say(return_word[1])
+                say_flag = True
                 break
 
+    if say_flag == False:
+        pyj.say("すみません。よくわかりません。")
+
     print("継続する場合はEnter,終了する場合はexitと入力して下さい")
-    in_over = input(">>")
+    in_over = input(">> ")
     if in_over == "exit":
         over_rall = False
 
