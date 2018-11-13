@@ -17,6 +17,7 @@ def return_news(words):
         news_dict = news_json['articles']
         for i in range(3):
             news += news_dict[i]['title']
+            print(news_dict[i]['title'])
             news += " "
 
     elif "エンタメ" in words or "芸能" in words:
@@ -48,6 +49,7 @@ def return_news(words):
         news_json = requests.get('https://newsapi.org/v2/top-headlines', params = payload).json()
         news_dict = news_json['articles']
         for i in range(3):
+            print(news_dict[i]['title'])
             news += news_dict[i]['title']
             news += " "
 
@@ -63,6 +65,7 @@ def return_news(words):
         news_json = requests.get('https://newsapi.org/v2/top-headlines', params = payload).json()
         news_dict = news_json['articles']
         for i in range(3):
+            print(news_dict[i]['title'])
             news += news_dict[i]['title']
             news += " "
 
@@ -93,6 +96,6 @@ def return_weather(words):
 
     return weather
 
-def return_map(words):
-    image = Image.open("./picture/index.png")
+def return_map(file_path):
+    image = Image.open(file_path)
     image.show()

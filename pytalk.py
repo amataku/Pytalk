@@ -41,6 +41,7 @@ while over_rall:
     words = []
     say_flag = False
     state = "rec"
+    response = ""
     xml_file = open('res.xml', 'w')
     xml_file.write("<ROOT>\n")
     xml_file.close()
@@ -52,8 +53,8 @@ while over_rall:
     print("録音終了する場合はEnterを入力")
     while state == "rec":
         response = client.recv(4096).decode('utf-8')
-        response_rep = response.replace('<s>','')
-        xml_file.write(response_rep.replace('</s>',''))
+        response = response.replace('<s>','')
+        xml_file.write(response.replace('</s>',''))
 
     # get words from res.xml
     try:
@@ -66,32 +67,54 @@ while over_rall:
                 for WHYPO in SHYPO:
                     if WHYPO.attrib["WORD"] != "":
                         words.append(WHYPO.attrib["WORD"])
-    except ValueError:
+    except:
         print("読み込みエラーが発生しました")
 
-    # serch database
+    print("入力:")
     print(words)
+
+    # serch database
     for r_words in (reversed(words)):
         cursor.execute('SELECT * FROM return WHERE input=?',(r_words,))
         return_word = cursor.fetchone()
         if return_word != None:
-            if return_word[1] == "news":
-                news = module.return_news(words)
-                pyj.say(news)
-                say_flag = True
-                break
-            elif return_word[1] == "weather":
-                weather = module.return_weather(words)
-                pyj.say(weather)
-                say_flag = True
-                break
-            elif return_word[1] == "map":
-                module.return_map(words)
-                pyj.say("地図を表示します。")
-                say_flag = True
-                break
-            else:
+
+            # select label
+            if return_word[2] == "plane":
+                print("出力:")
+                print(return_word[1])
+                print("")
                 pyj.say(return_word[1])
+                say_flag = True
+                break
+
+            elif return_word[2] == "api":
+                if return_word[3] == "news":
+                    print("出力:")
+                    print(return_word[1])
+                    news = module.return_news(words)
+                    news = return_word[1] + news
+                    print("")
+                    pyj.say(news)
+                    say_flag = True
+                    break
+
+                elif return_word[3] == "weather":
+                    print("出力:")
+                    weather = module.return_weather(words)
+                    weather = return_word[1] + weather
+                    print(weather)
+                    print("")
+                    pyj.say(weather)
+                    say_flag = True
+                    break
+
+            elif return_word[2] == "image":
+                print("出力:")
+                print(return_word[1])
+                print("")
+                pyj.say(return_word[1])
+                module.return_map(return_word[3])
                 say_flag = True
                 break
 
