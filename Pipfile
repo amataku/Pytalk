@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 pyjtalk = "*"
-requests = "*"
 image = "*"
+requests = "*"
 
 [dev-packages]
 
