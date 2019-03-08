@@ -79,43 +79,24 @@ while over_rall:
         return_word = cursor.fetchone()
         if return_word != None:
 
-            # select label
-            if return_word[2] == "normal":
-                print("出力:")
-                print(return_word[1])
-                print("")
-                pyj.say(return_word[1])
-                say_flag = True
-                break
+            #voice output
+            pyj.say(return_word[1])
+            say_flag = True
 
-            elif return_word[2] == "api":
+            # select label
+            if return_word[2] == "api":
                 if return_word[3] == "news":
-                    print("出力:")
-                    print(return_word[1])
                     news = module.return_news(words)
-                    news = return_word[1] + news
-                    print("")
                     pyj.say(news)
-                    say_flag = True
                     break
 
                 elif return_word[3] == "weather":
-                    print("出力:")
                     weather = module.return_weather(words)
-                    weather = return_word[1] + weather
-                    print(weather)
-                    print("")
                     pyj.say(weather)
-                    say_flag = True
                     break
 
             elif return_word[2] == "image":
-                print("出力:")
-                print(return_word[1])
-                print("")
-                pyj.say(return_word[1])
                 module.return_map(return_word[3])
-                say_flag = True
                 break
 
     if say_flag == False:

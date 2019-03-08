@@ -90,9 +90,7 @@ def return_weather(words):
         weather_json = requests.get('http://weather.livedoor.com/forecast/webservice/json/v1', params = payload).json()
         weather += "今日の天気は、"
         weather += weather_json["forecasts"][0]["telop"]
-        weather += "です。最高気温は、"
-        weather += weather_json["forecasts"][0]["temperature"]["max"]["celsius"]
-        weather += "度です。"
+        weather += "です。"
 
     return weather
 
