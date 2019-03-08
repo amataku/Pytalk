@@ -16,7 +16,7 @@ try:
     print("\nこの応答に対するラベルを選択して下さい。ラベルを選択しない場合はEnterを押して下さい。(API機能使用の場合はapi,画像表示使用の場合はimage)")
     word_label = input(">> ")
     if word_label == "":
-        word_label = "plane"
+        word_label = "normal"
         word_selec = "none"
     else:
         print("\n使用する機能を選択して下さい。(ニュース使用の場合はnews,天気の場合はweather,画像表示の場合はファイル名)")

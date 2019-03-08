@@ -80,7 +80,7 @@ while over_rall:
         if return_word != None:
 
             # select label
-            if return_word[2] == "plane":
+            if return_word[2] == "normal":
                 print("出力:")
                 print(return_word[1])
                 print("")
